@@ -11,3 +11,7 @@ examples/cprod: examples/cprod.c vecmath/vecmath.c vecmath/vecmath.h
 
 examples/norm: examples/norm.c vecmath/vecmath.c vecmath/vecmath.h
 	gcc examples/norm.c vecmath/vecmath.c -O3 -lm -o examples/norm
+
+install_headers:
+	cp vecmath/vecmath.h /usr/include/
+

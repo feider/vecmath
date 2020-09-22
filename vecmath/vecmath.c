@@ -5,6 +5,13 @@
 #include <string.h>
 #include <math.h>
 
+// helper code
+
+double to_rad(double deg)
+{
+    return deg * 3.14159 / 180.0;
+}
+
 /* Vector code */
 
 Vector * vecm_vector_create(size_t size)
@@ -13,6 +20,13 @@ Vector * vecm_vector_create(size_t size)
     vec->size = size;
     vec->values = (double*) malloc(size * sizeof(double));
     return vec;
+}
+
+void vecm_vector_init(Vector * vec, size_t size, double values)
+{
+    vec->size = size;
+    vec->values = (double*) malloc(size * sizeof(double));
+    memset(vec->values, values, vec->size);
 }
 
 void vecm_vector_destroy(Vector * vec)
@@ -97,6 +111,12 @@ double vecm_vector_len(Vector * vec)
     for(l = 0; l<vec->size; l++)
         result += (vec->values[l] * vec->values[l]);
     return sqrt(result);
+}
+
+void vecm_vector_from_deg(Vector * vec, double angle, double length)
+{
+    vec->values[0] = length * cos(to_rad(angle));
+    vec->values[1] = length * sin(to_rad(angle));
 }
 
 void print_vector(Vector * vec)

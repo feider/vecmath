@@ -9,6 +9,8 @@ typedef struct {
 
 Vector * vecm_vector_create(size_t length);
 
+void vecm_vector_init(Vector * vector, size_t size, double values);
+
 void vecm_vector_destroy(Vector * vec);
 
 void vecm_vector_set(Vector * vec, const double * values);
@@ -26,6 +28,8 @@ void vecm_vector_smult(Vector * vec, double scalar, Vector * result);
 void vecm_vector_sdiv(Vector * vec, double scalar, Vector * result);
 
 double vecm_vector_len(Vector * vec);
+
+void vecm_vector_from_deg(Vector * vec, double angle, double length);
 
 void print_vector(Vector * vec);
 
