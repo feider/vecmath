@@ -17,21 +17,21 @@ int main()
     print_vector(a);
     printf("\n");
 
-    vecm_vector_sdiv(a, 10, a);
+    vecm_vec_sdiv(a->values, 10, a->values, a->size);
 
     print_vector(a);
     printf("\n");
     
-    vecm_vector_smult(a, -1, a);
+    vecm_vec_smult(a->values, -1, a->values, a->size);
     print_vector(a);
     printf("\n");
     double len;
-    len = vecm_vector_len(a);
+    len = vecm_vec_len(a->values, 2);
     printf("vector has len %f\n", len);
-    vecm_vector_sdiv(a, len, a);
+    vecm_vec_sdiv(a->values, len, a->values, a->size);
     print_vector(a);
     printf("\n");
-    len = vecm_vector_len(a);
+    len = vecm_vec_len(a->values, a->size);
     printf("vector has len %f\n", len);
 
     vecm_vector_destroy(a);
@@ -45,9 +45,9 @@ int main()
     start = clock();
     for(size_t i = 0; i < 1000000; i++)
     {
-        vecm_vector_smult(a, -2, a);
-        len = vecm_vector_len(a);
-        vecm_vector_sdiv(a, len, a);
+        vecm_vec_smult(a->values, -2, a->values, a->size);
+        len = vecm_vec_len(a->values, a->size);
+        vecm_vec_sdiv(a->values, len, a->values, a->size);
     }
     end = clock();
     time_used = ((double) (end-start))/CLOCKS_PER_SEC;

@@ -19,7 +19,8 @@ int main()
         vecm_vector_set(b, vals);
     }
 
-    vecm_vector_cprod(a, b, c);
+    vecm_vec_cprod(a->values, b->values, c->values);
+
 
     print_vector(a);
     printf("\n");
@@ -48,7 +49,7 @@ int main()
     start = clock();
     for(size_t i = 0; i < 1000000; i++)
     {
-        vecm_vector_cprod(a, b, c);
+        vecm_vec_cprod(a->values, b->values, c->values);
     }
     end = clock();
     time_used = ((double) (end-start))/CLOCKS_PER_SEC;
