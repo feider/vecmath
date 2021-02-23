@@ -1,19 +1,21 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
-
+/*
 void fdrm_points_to_line(const double * points, double * line);
 int fdrm_lines_intersect(const double * line_1, const double * line_2, double * point);
 int fdrm_segments_intersect(const double * points_1, const double * points_2, double * point_intersection);
 int fdrm_point_in_segment(const double * point, const double * segment);
 void fdrm_seg_from_points(const double * p1, const double * p2, double * segment);
+double fdrm_side(const double * segment, const double * point);
+*/
 
 
 // implementation
 #include <math.h>
 #include <string.h>
 
-inline void fdrm_points_to_line(const double * points, double * line)
+static inline void fdrm_points_to_line(const double * points, double * line)
 {
     double x1 = points[0];
     double y1 = points[1];
@@ -24,7 +26,7 @@ inline void fdrm_points_to_line(const double * points, double * line)
     line[2] = (x2*y1) - (x1*y2);
 }
 
-inline int fdrm_lines_intersect(const double * line_1, const double * line_2, double * point)
+static inline int fdrm_lines_intersect(const double * line_1, const double * line_2, double * point)
 {
     double a1 = line_1[0];
     double b1 = line_1[1];
@@ -41,7 +43,7 @@ inline int fdrm_lines_intersect(const double * line_1, const double * line_2, do
     return (d != 0);
 }
 
-inline int fdrm_point_in_segment(const double * point, const double * segment)
+static inline int fdrm_point_in_segment(const double * point, const double * segment)
 {
     const double * sp1 = segment;
     const double * sp2 = segment+2;
@@ -61,7 +63,7 @@ inline int fdrm_point_in_segment(const double * point, const double * segment)
 
 }
 
-inline int fdrm_segments_intersect(const double * points_1, const double * points_2, double * point_intersection)
+static inline int fdrm_segments_intersect(const double * points_1, const double * points_2, double * point_intersection)
 {
     double * pi = point_intersection;
     // first get intersection point
@@ -77,10 +79,17 @@ inline int fdrm_segments_intersect(const double * points_1, const double * point
     return (fdrm_point_in_segment(pi, points_1) && fdrm_point_in_segment(pi, points_2));
 }
 
-inline void fdrm_seg_from_points(const double * p1, const double * p2, double * segment)
+static inline void fdrm_seg_from_points(const double * p1, const double * p2, double * segment)
 {
     memcpy(segment, p1, 2*sizeof(double));
     memcpy(segment+2, p2, 2*sizeof(double));
+}
+
+static inline double fdrm_side(const double * segment, const double * point)
+{
+    double l[3];
+    fdrm_points_to_line(segment, l);
+    return (l[0] * point[0]) + (l[1]*point[1]) *l[2];
 }
 
 #endif
