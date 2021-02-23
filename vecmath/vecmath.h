@@ -1,5 +1,6 @@
 #ifndef VECMATH_H 
 #define VECMATH_H
+
 #include <stddef.h>
 
 typedef struct {
@@ -8,6 +9,7 @@ typedef struct {
 
 } Vector;
 
+/*
 Vector * vecm_vector_create(size_t length);
 
 void vecm_vector_init(Vector * vector, size_t size, double values);
@@ -43,7 +45,7 @@ void vecm_vec2d_from_deg(double * vec, double angle, double length);
 double vecm_vec2d_vec_to_deg(double * vec);
 
 void print_vector(Vector * vec);
-void print_vec(double * vec, size_t size);
+void print_vec(double * vec, size_t size); */
 
 typedef struct {
     size_t columns;
@@ -51,6 +53,7 @@ typedef struct {
     size_t size;
     double * values;
 } Matrix;
+/*
 
 Matrix * vecm_mat_create(size_t rows, size_t columns);
 
@@ -63,6 +66,7 @@ void vecm_mat_fill(Matrix * mat, double value);
 void vecm_mat_setat(Matrix * mat, size_t row, size_t column, double value);
 
 void print_matrix(Matrix * mat);
+*/
 
 // implementation 
 //
@@ -74,18 +78,18 @@ void print_matrix(Matrix * mat);
 
 // helper code
 
-inline double vecm_to_rad(double deg)
+static inline double vecm_to_rad(double deg)
 {
     return deg * 3.14159 / 180.0;
 }
-inline double vecm_to_deg(double rad)
+static inline double vecm_to_deg(double rad)
 {
     return 180 * rad / 3.14159;
 }
 
 /* Vector code */
 
-inline Vector * vecm_vector_create(size_t size)
+static inline Vector * vecm_vector_create(size_t size)
 {
     Vector * vec = (Vector *) malloc(sizeof(Vector));
     vec->size = size;
@@ -93,25 +97,25 @@ inline Vector * vecm_vector_create(size_t size)
     return vec;
 }
 
-inline void vecm_vector_init(Vector * vec, size_t size, double values)
+static inline void vecm_vector_init(Vector * vec, size_t size, double values)
 {
     vec->size = size;
     vec->values = (double*) malloc(size * sizeof(double));
     memset(vec->values, values, vec->size);
 }
 
-inline void vecm_vector_destroy(Vector * vec)
+static inline void vecm_vector_destroy(Vector * vec)
 {
     free(vec->values);
     free(vec);
 }
 
-inline void vecm_vector_set(Vector * vec, const double * values)
+static inline void vecm_vector_set(Vector * vec, const double * values)
 {
     memcpy((void*) vec->values, (void*) values, vec->size*sizeof(double));
 }
 
-inline void vecm_vector_add(Vector * vec1, Vector * vec2, Vector * result)
+static inline void vecm_vector_add(Vector * vec1, Vector * vec2, Vector * result)
 {
     if ((vec1->size != vec2->size) ||
             (vec2->size != result->size))
@@ -125,14 +129,14 @@ inline void vecm_vector_add(Vector * vec1, Vector * vec2, Vector * result)
     }
 }
 
-inline void vecm_vec_add(double * vec1, double * vec2, double * result, size_t size)
+static inline void vecm_vec_add(double * vec1, double * vec2, double * result, size_t size)
 {
     for(size_t l = 0; l<size; l++)
     {
         result[l] = vec1[l] + vec2[l];
     }
 }
-inline void vecm_vec_sub(double * vec1, double * vec2, double * result, size_t size)
+static inline void vecm_vec_sub(double * vec1, double * vec2, double * result, size_t size)
 {
     for(size_t l = 0; l<size; l++)
     {
@@ -140,14 +144,28 @@ inline void vecm_vec_sub(double * vec1, double * vec2, double * result, size_t s
     }
 }
 
-inline void vecm_vec2d_hom_from_points(double * p1, double * p2, double * homogenous)
+static inline void vecm_vec2d_hom_from_points(double * p1, double * p2, double * homogenous)
 {
     homogenous[0] = p1[1]-p2[1];
     homogenous[1] = p2[0]-p1[0];
     homogenous[2] = -( (p2[0]*p1[1]) - (p1[0]*p2[1]) );
 }
 
-inline void vecm_vec2d_normal(double * p1, double * p2, double * normal)
+static inline double vecm_vec_len(double * vec, size_t size)
+{
+    double retval = 0;
+    for (size_t i = 0; i < size; i++)
+        retval += (vec[i] * vec[i]);
+    return sqrt(retval);
+}
+
+static inline void vecm_vec_sdiv(double * vec, double scalar, double * result, size_t size)
+{
+    for (size_t i = 0; i < size; i++)
+        result[i] = vec[i]/scalar;
+}
+
+static inline void vecm_vec2d_normal(double * p1, double * p2, double * normal)
 {
     double dx = p2[0] - p1[0];
     double dy = p2[1] - p1[1];
@@ -157,7 +175,7 @@ inline void vecm_vec2d_normal(double * p1, double * p2, double * normal)
     vecm_vec_sdiv(normal, len, normal, 2);
 }
 
-inline double vecm_vector_dprod(Vector * vec1, Vector * vec2)
+static inline double vecm_vector_dprod(Vector * vec1, Vector * vec2)
 {
     if (vec1->size != vec2->size)
     {
@@ -173,28 +191,16 @@ inline double vecm_vector_dprod(Vector * vec1, Vector * vec2)
     return result;
 }
 
-inline double vecm_vec_len(double * vec, size_t size)
-{
-    double retval = 0;
-    for (size_t i = 0; i < size; i++)
-        retval += (vec[i] * vec[i]);
-    return sqrt(retval);
-}
 
-inline void vecm_vec_sdiv(double * vec, double scalar, double * result, size_t size)
-{
-    for (size_t i = 0; i < size; i++)
-        result[i] = vec[i]/scalar;
-}
 
-inline void print_vector(Vector * vec)
+static inline void print_vector(Vector * vec)
 {
     printf("[");
     for(size_t i = 0; i < vec->size;i++)
         printf("%f ", vec->values[i]);
     printf("]");
 }
-inline void print_vec(double * vec, size_t size)
+static inline void print_vec(double * vec, size_t size)
 {
     printf("[");
     for(size_t i = 0; i < size; i++)
@@ -202,7 +208,7 @@ inline void print_vec(double * vec, size_t size)
     printf("]");
 }
 
-inline void vecm_vec_cprod(double * vec1, double * vec2, double * result)
+static inline void vecm_vec_cprod(double * vec1, double * vec2, double * result)
 {
 
     double * val1 = vec1;
@@ -216,24 +222,24 @@ inline void vecm_vec_cprod(double * vec1, double * vec2, double * result)
     memcpy(result, valr, 3*sizeof(double));
 }
 
-inline void vecm_vec_smult(double * vec, double scalar, double * result, size_t size)
+static inline void vecm_vec_smult(double * vec, double scalar, double * result, size_t size)
 {
     size_t l;
     for(l = 0; l < size; l++)
         result[l] = vec[l] * scalar;
 }
 
-inline void vecm_vec2d_from_deg(double * vec, double angle, double length)
+static inline void vecm_vec2d_from_deg(double * vec, double angle, double length)
 {
     vec[0] = length * cos(vecm_to_rad(angle));
     vec[1] = length * sin(vecm_to_rad(angle));
 }
-inline double vecm_vec2d_to_deg(double * vec)
+static inline double vecm_vec2d_to_deg(double * vec)
 {
     return vecm_to_deg(atan2(vec[1], vec[0]));
 };
 
-inline Matrix * vecm_mat_create(size_t rows, size_t columns)
+static inline Matrix * vecm_mat_create(size_t rows, size_t columns)
 {
     Matrix * mat = (Matrix*) malloc(sizeof(Matrix));
     mat->rows   = rows;
@@ -243,13 +249,13 @@ inline Matrix * vecm_mat_create(size_t rows, size_t columns)
     return mat;
 }
 
-inline void vecm_mat_destroy(Matrix * mat)
+static inline void vecm_mat_destroy(Matrix * mat)
 {
     free(mat->values);
     free(mat);
 }
 
-inline void vecm_mat_add(Matrix * mat1, Matrix * mat2, Matrix * result)
+static inline void vecm_mat_add(Matrix * mat1, Matrix * mat2, Matrix * result)
 {
     if (
             (mat1->rows != mat2->rows) || (mat1->rows != result->rows) ||
@@ -262,19 +268,19 @@ inline void vecm_mat_add(Matrix * mat1, Matrix * mat2, Matrix * result)
     for (l = 0; l<mat1->size; l++){ result->values[l] = mat1->values[l] + mat2->values[l]; }
 }
 
-inline void vecm_mat_fill(Matrix * mat, double value)
+static inline void vecm_mat_fill(Matrix * mat, double value)
 {
     size_t l;
     for (l = 0; l<mat->size; l++){ mat->values[l] = value; }
 }
 
-inline void vecm_mat_setat(Matrix * mat, size_t row, size_t column, double value)
+static inline void vecm_mat_setat(Matrix * mat, size_t row, size_t column, double value)
 {
     size_t l = column*mat->rows + row;
     mat->values[l] = value;
 }
 
-inline void print_matrix(Matrix * mat)
+static inline void print_matrix(Matrix * mat)
 {
     size_t c, r, l;
     for(c = 0; c<mat->columns; c++)
