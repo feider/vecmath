@@ -191,7 +191,7 @@ static inline double vecm_vector_dprod(Vector * vec1, Vector * vec2)
     return result;
 }
 
-double vecm_vec_dprod(double * vec1, double * vec2, size_t size)
+static inline double vecm_vec_dprod(double * vec1, double * vec2, size_t size)
 {
     double result = 0;
     for(size_t l = 0; l<size; l++)
