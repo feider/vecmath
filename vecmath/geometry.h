@@ -99,7 +99,7 @@ static inline double fdrm_point_segment_distance(const double * segment, const d
     return fabs( 
               (l[0] * point[0]) 
             + (l[1] * point[1]) 
-            +  l[2]) / 
+            -  l[2]) / 
         sqrt(
                   (l[0] * l[0]) 
                 + (l[1] * l[1])
