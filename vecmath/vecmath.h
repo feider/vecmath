@@ -74,11 +74,11 @@ void print_matrix(Matrix * mat);
 
 // helper code
 
-inline double vec_to_rad(double deg)
+inline double vecm_to_rad(double deg)
 {
     return deg * 3.14159 / 180.0;
 }
-inline double vec_to_deg(double rad)
+inline double vecm_to_deg(double rad)
 {
     return 180 * rad / 3.14159;
 }
@@ -222,6 +222,16 @@ inline void vecm_vec_smult(double * vec, double scalar, double * result, size_t 
     for(l = 0; l < size; l++)
         result[l] = vec[l] * scalar;
 }
+
+inline void vecm_vec2d_from_deg(double * vec, double angle, double length)
+{
+    vec[0] = length * cos(vecm_to_rad(angle));
+    vec[1] = length * sin(vecm_to_rad(angle));
+}
+inline double vecm_vec2d_to_deg(double * vec)
+{
+    return vecm_to_deg(atan2(vec[1], vec[0]));
+};
 
 inline Matrix * vecm_mat_create(size_t rows, size_t columns)
 {
