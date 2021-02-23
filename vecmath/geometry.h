@@ -23,7 +23,7 @@ static inline void fdrm_points_to_line(const double * points, double * line)
     double y2 = points[3];
     line[0] = y1-y2;
     line[1] = x2-x1;
-    line[2] = -((x2*y1) - (x1*y2));
+    line[2] = (x2*y1) - (x1*y2);
 }
 
 static inline int fdrm_lines_intersect(const double * line_1, const double * line_2, double * point)
