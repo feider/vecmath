@@ -89,7 +89,7 @@ static inline double fdrm_side(const double * segment, const double * point)
 {
     double l[3];
     fdrm_points_to_line(segment, l);
-    return (l[0] * point[0]) + (l[1]*point[1]) *l[2];
+    return (l[0] * point[0]) + (l[1]*point[1]) + l[2];
 }
 
 static inline double fdrm_point_segment_distance(const double * segment, const double * point)
